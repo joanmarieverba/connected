@@ -44,7 +44,7 @@ class CheckIns extends Component {
 
   handleCheckin = () => {
    this.props.checkIn(() => {
-     this.props.fetchUsers();
+      this.fetchUsers();
    });
   }
 

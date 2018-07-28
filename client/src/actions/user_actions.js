@@ -38,7 +38,7 @@ export const findUser = ( email ) => {
     } else {
       dispatch(authFailure());
     }
-    
+
     axios.post(`/user/`, email ,{headers: { Authorization: token }}).then(result => {
       dispatch({
         type: FIND_USER_SUCCESS,
@@ -94,7 +94,7 @@ export const getUsers = () => {
   }
 }
 
-export const checkIn = () => {
+export const checkIn = (callback) => {
   return (dispatch) => {
     dispatch({
       type: CHECKIN_USER_REQUEST,
@@ -116,6 +116,7 @@ export const checkIn = () => {
         message: "You are checked In"
       })
       dispatch(success('You are checked In, See ya tomorrow'));
+      callback();
       
     }).catch(error => {
       dispatch({
@@ -123,6 +124,7 @@ export const checkIn = () => {
         message: error
       })
       dispatch(failure("Something Went Wrong !! We couldn't check you in"));
+      callback();
     })
   }
 }
