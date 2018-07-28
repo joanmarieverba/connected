@@ -1,11 +1,28 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { getUsers } from '../../actions/user_actions';
+import { getUsers, checkIn } from '../../actions/user_actions';
 import { bindActionCreators } from 'redux';
 import Grid from '@material-ui/core/Grid';
 import GridList from '../../components/UI/GridList/GridList';
-import { Button } from 'mdbreact';
 import './CheckIns.css';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/icons/Check';
+
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
+  iconSmall: {
+    fontSize: 20,
+  },
+});
 
 class CheckIns extends Component {
 
@@ -25,17 +42,24 @@ class CheckIns extends Component {
     )
   }
 
+  handleCheckin = () => {
+   this.props.checkIn(() => {
+     this.props.fetchUsers();
+   });
+  }
+
   render() {
+    const { classes } = this.props;
     return (
       <div>
-        {/* <Grid 
-          direction="row"
-          justify="center"
-          class="checkinHeading"> 
-            <h2>Check In</h2>
-        </Grid> */}
         <Grid container justify="center">
-          <Grid>
+          <Grid
+            container
+            justify="center">
+            <Button onClick={this.handleCheckin} variant="contained" color="secondary">
+              Check In
+            <Icon>send</Icon>
+            </Button>
           </Grid>
           <Grid 
           justify="center"
@@ -46,13 +70,10 @@ class CheckIns extends Component {
       </div>
     )
   }
-
-
-
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ getUsers }, dispatch)
+  return bindActionCreators({ getUsers, checkIn }, dispatch)
 }
 
 const mapStateToProps = (state) => {

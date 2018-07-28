@@ -21,8 +21,6 @@ class Registration extends Component {
 
   handleInputChange = (event) => {
     event.preventDefault();
-    console.log("in prvt input");
-    console.log(event.target.name);
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -31,7 +29,6 @@ class Registration extends Component {
   handleFormSubmit = (event) => {
     event.preventDefault();
     const registrationInfo = { registration: { ...this.state } }
-    console.log(registrationInfo);
   }
 
   render() {

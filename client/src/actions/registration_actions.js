@@ -22,16 +22,24 @@ export const registerUser = (user, history) => {
         success: true
       })
       history.push('/login')
-      dispatch(success('Registration Successful'))
     }).catch(error => {
-      dispatch({
-        type: REGISTER_FAILURE,
-        error: error,
-        success: false,
-        message: 'Registration failed'
-      });
 
-      dispatch(failure('Registration Failed'));
+      if(error.response.status === 409) {
+        dispatch(failure('Registration failed !! User Already exists with this email address'));
+        dispatch({
+          type: REGISTER_FAILURE,
+          error: error,
+          success: false,
+          message: 'Registration failed'
+        });
+      } else {
+        dispatch({
+          type: REGISTER_FAILURE,
+          error: error,
+          success: false,
+          message: 'Registration failed'
+        });
+      }      
     });
   }
 }

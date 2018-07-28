@@ -15,6 +15,8 @@ router.get('/', checkAuth, userController.get_users);
 
 router.post('/', checkAuth, userController.get_user);
 
+router.put('/', checkAuth, userController.updateCheckin);
+
 //router.get('/userbyemail', checkAuth, userController.get_user_by_email);
 
 module.exports = router;

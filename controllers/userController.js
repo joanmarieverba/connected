@@ -47,7 +47,6 @@ module.exports = {
 
 
   register_user: (req, res) => {
-    console.log('in here');
     User.find({
       email: req.body.email
     }).exec().then(user => {
@@ -56,9 +55,8 @@ module.exports = {
           message: 'Email Exists'
         });
       } else {
-        console.log('in here 2');
+        
         bcrypt.hash(req.body.password, 10, (err, hash) => {
-          console.log(hash);
           if (err) {
             return res.status(500).json({
               error: err
@@ -73,13 +71,11 @@ module.exports = {
               phone: req.body.phone
             });
             user.save().then(result => {
-              console.log(result);
               res.status(201).json({
                 message: 'User Created',
                 user: result
               });
             }).catch(err => {
-              console.log(result);
               res.status(500).json({
                 error: err
               });
@@ -105,7 +101,6 @@ module.exports = {
   },
 
   get_users: (req, res) => {
-    console.log("IN GET USERS");
     const userId = req.userData.userId;
     Group.find({ users: userId })
       .exec()
@@ -124,19 +119,19 @@ module.exports = {
             });
           });
         } else {
-          User.find({_id: userId}).then(user => {
+          User.find({ _id: userId }).then(user => {
             res.status(200).json({
               users: user
             });
           })
         }
-    });
+      });
   },
 
   get_user: (req, res) => {
     const userEmail = req.body.email;
 
-    User.find({email: userEmail}).then(user => {
+    User.find({ email: userEmail }).then(user => {
 
       res.status(200).json({
         user
@@ -148,23 +143,19 @@ module.exports = {
     })
   },
 
-  // get_user_by_email: (req, res) => {
-
-  //   const email = req.body.email;
-  //   User.find({ email: email }).then(user => {
-  //     res.status(200).json({
-  //       user
-  //     });   
-  //   }).catch(error => {
-  //     res.status(500).json({
-  //       error: error
-  //     });
-  //   })
-
-  // }
-
-
-
-
-
+  updateCheckin: (req, res) => {
+    const userId = req.userData.userId;
+    const date = Date(Date.now());
+    User.update({ _id: userId },
+      { $set: { lastCheckin: date } },
+      { multi: true }).then(result => {
+        res.status(200).json({
+          result
+        })
+      }).catch(error => {
+        res.status(500).json({
+          error
+        })
+      })
+  }
 }

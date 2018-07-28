@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import Home from './containers/Home/Home';
-import ReactDOM from 'react-dom';
-//import Messages from './pages/Messages/Messages';
 import About from './pages/About';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import CheckIns from './containers/CheckIns/CheckIns';
 import TermsOfService from './pages/TermsOfService/index';
 
@@ -17,19 +15,16 @@ import Toolbar from './components/UI/ToolBar/ToolBar';
 import SideDrawer from './components/UI/ToolBar/SideDrawer/SideDrawer';
 import Backdrop from './components/UI/Backdrop/Backdrop';
 import Groups from './containers/Groups/Groups';
-import MenuAppBar from './components/UI/AppBar/AppBar';
+
+
 
 class App extends Component {
-
-
 
   state = {
       sideDrawerOpen: false
     };
 
     drawerTogglerClickHandler = () => {
-
-      console.log("in here click");
       this.setState((prevState) => {
         return {sideDrawerOpen: !prevState.sideDrawerOpen};
       });
@@ -37,8 +32,12 @@ class App extends Component {
 
     backDropClickHandler = () => {
       this.setState({sideDrawerOpen: false});
-
     };
+
+    logout = () => {
+      localStorage.removeItem("jwtToken");
+      this.props.history.push('/login');
+    }
 
   render() {
     let backDrop;
@@ -51,9 +50,13 @@ class App extends Component {
       <div style={{ height: '100%' }}>
 
           <Toolbar
+          isAuth={this.props.isAuthenticated}
           drawerClickHandler={this.drawerTogglerClickHandler}
         />
-        <SideDrawer show={this.state.sideDrawerOpen}/>
+        <SideDrawer
+        logout={this.logout}
+        isAuth={this.props.isAuthenticated}
+        show={this.state.sideDrawerOpen}/>
         {backDrop}
         <Notification sending={this.props.notificaton}/>
         <main style={{ marginTop: 100 }}>
@@ -61,9 +64,8 @@ class App extends Component {
             <PrivateRoute exact path="/" component={Home} />
             <Route exact path="/login" exact component={SignIn} />
             <Route exact path="/register" exact component={Registration} />
-            <Route exact path="/about" exact component={About} />
             <Route exact path="/terms" exact component={TermsOfService} />
-              <PrivateRoute exact path="/checkin" exact component={CheckIns} />
+            <PrivateRoute exact path="/checkin" exact component={CheckIns} />
             <PrivateRoute exact path="/groups" exact component={Groups} />
             <PrivateRoute exact path="/posts/:id" exact component={Comments} />
             <PrivateRoute exact path="/about" exact component={About} />
@@ -78,10 +80,10 @@ class App extends Component {
 
 
 const mapStateToProps = (state) => {
-  console.log('IN app');
-  console.log(state);
+  console.log(state.auth.isAuthenticated);
   return {
-    notificaton: state.alert
+    notificaton: state.alert,
+    isAuthenticated: state.auth.isAuthenticated
   }
 }
 

@@ -9,7 +9,6 @@ const checkAuth = require('../authentication/check-auth');
 router.get('/all', checkAuth, (req, res) => {
 
   Group.find({}).exec().then(result => {
-    console.log(result);
     res.status(200).json({
       groups: result
     })
@@ -21,23 +20,22 @@ router.get('/all', checkAuth, (req, res) => {
 });
 
 
-router.get('/', checkAuth,  (req, res) => {
+router.get('/', checkAuth, (req, res) => {
   const userId = req.userData.userId;
 
-  Group.find({users: userId})
+  Group.find({ users: userId })
     .sort({ date: 'desc' })
     .populate("users")
-  .then(groups => {
-    console.log(groups);
-    res.status(200).json({
-      groups: groups
-    });
-  })
-  .catch(err => {
-    res.status(500).json({
-      error: err
-    });
-  })
+    .then(groups => {
+      res.status(200).json({
+        groups: groups
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    })
 });
 
 router.post('/', checkAuth, (req, res) => {
@@ -51,7 +49,7 @@ router.post('/', checkAuth, (req, res) => {
     createdBy: createdBy,
     description: req.body.description,
     createdByName: createdByName,
-    users: [ createdBy ],
+    users: [createdBy],
     createdTimestamp: new Date(Date.now())
   });
 
@@ -61,44 +59,50 @@ router.post('/', checkAuth, (req, res) => {
       result: result
     })
   }).catch(err => {
-    console.log(err);
     res.status(500).json({
       error: err
     });
   });
 });
 
-router.put('/addUser', checkAuth ,(req, res) => {
+router.put('/addUser', checkAuth, (req, res) => {
 
   const userEmail = req.body.email;
   const groupId = req.body.groupId;
-  console.log(userEmail);
-  User.findOne({ email: userEmail }).then(user => {
-    console.log("in add user");
-    console.log(user);
-    if (user) {
 
+  User.findOne({ email: userEmail }).then(user => {
+
+    if (user) {
       const userId = user._id;
-      console.log("user found");
+
+      Group.find({ users: userId }).then(user => {
+
+        if (user && user.length > 0) {
+          res.status(409).json({
+            message: 'User already exists in the group'
+          })
+        } else {
           Group.findOneAndUpdate(
             { _id: groupId },
             { $push: { users: userId } },
             { new: true })
-          .then(group => {
+            .then(group => {
               res.status(200).json({
                 group: group
               })
-        }).catch(err => {
-          res.status(500).json({
-            error: err
-          });
-        });
+            }).catch(err => {
+              res.status(500).json({
+                error: err
+              });
+            });
+        }
+      })
     }
     else {
-    res.status(200).json({
-      message: "User Not found"
-    })
-  }
+      res.status(200).json({
+        message: "User Not found"
+      })
+    }
 
   }).catch(error => {
     res.status(500).json({

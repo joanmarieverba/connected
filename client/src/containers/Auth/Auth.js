@@ -27,7 +27,7 @@ class Auth extends Component {
 
 
   formSubmit = (formState) => {
-    console.log('in auth form submit');
+    
   }
 
   render() {

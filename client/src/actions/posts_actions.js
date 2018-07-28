@@ -3,6 +3,7 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 
 import { success, failure } from './alert_actions';
+import { authSuccess, authFailure} from './auth_actions';
 
 export const GET_ALL_POSTS_REQUEST = 'GET_ALL_POSTS_REQUEST';
 export const GET_ALL_POSTS_SUCCESS = 'GET_ALL_POSTS_SUCCESS';
@@ -42,6 +43,7 @@ export const createPost = (post, callback ) => {
         post: result
       });
       dispatch(success('Post Successfully Created'));
+      dispatch(authSuccess());
       }).catch(error => {
       dispatch({
         type: CREATE_POST_FAILURE,
@@ -49,6 +51,7 @@ export const createPost = (post, callback ) => {
         message: error
       })
       dispatch(failure('Post Creation Failed'));
+      dispatch(authFailure());
     });
   }
 }
@@ -60,8 +63,15 @@ export const getPosts = (history) => {
       type: GET_ALL_POSTS_REQUEST,
       message: 'Getting Posts'
     })
+    
     const jwt = localStorage.getItem('jwtToken');
     const token = `Bearer ${jwt}`;
+    if (jwt) {
+      dispatch(authSuccess());
+    } else {
+      dispatch(authFailure());
+    }
+
     axios.get('/posts', {
       headers: { Authorization: token }
     }).then(result => {
@@ -70,7 +80,6 @@ export const getPosts = (history) => {
         message: 'Get posts success',
         post: result.data
       });
-      //dispatch(success('Posts Successfully Fetched'));
     }).catch(error => {
       dispatch({
         type: GET_ALL_POSTS_FAILURE,
@@ -94,6 +103,12 @@ export const getPost = (id, history) => {
     const jwt = localStorage.getItem('jwtToken');
     const token = `Bearer ${jwt}`;
 
+    if (jwt) {
+      dispatch(authSuccess());
+    } else {
+      dispatch(authFailure());
+    }
+
     axios.get(`/posts/${id}`, {
       headers: { Authorization: token }
     }).then(result => {
@@ -116,8 +131,6 @@ export const getPost = (id, history) => {
 
 
 export const createComment = (postId, comment, callback) => {
-
-  console.log("create comment action");
 
   return (dispatch) => {
 

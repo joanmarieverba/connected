@@ -23,9 +23,10 @@ class CheckInFeed extends Component {
 	loadCheckedInFeed = () => {
 		API.getGroupMembers(this.state.firstName, this.state.lastName, this.state.date)
 		.then(res => {
-			console.log();
 			this.setState({usersCheckedIn: res.data.response, firstName: "", lastName: "", date: ""});
-		}).catch(err => console.log(err));
+		}).catch(err => {
+			
+		});
 	};
 
 	render() {

@@ -11,7 +11,6 @@ export default {
     },
     // Saves a article to the database
     saveMessages: function (messagesData) {
-        console.log("messageData ", messagesData);
         return axios.post("/api/message", messagesData);
     },
     getGroupMembers: function () {

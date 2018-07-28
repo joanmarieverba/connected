@@ -25,7 +25,6 @@ export const groups = (state = {}, action) => {
     case GET_GROUP_REQUEST:
       return updateObject(state, action);
     case GET_GROUP_SUCCESS:
-      console.log(action);
       return updateObject(state, action);
     case GET_GROUP_FAILURE:
       return updateObject(state, action);

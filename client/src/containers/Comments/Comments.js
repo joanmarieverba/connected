@@ -24,10 +24,11 @@ import { bindActionCreators } from 'redux';
 import {  getPost, createComment } from '../../actions/posts_actions';
 import _ from 'lodash';
 import CardComment from '../../components/UI/Card/CardComment';
-import red from '@material-ui/core/colors/red';
+import red from '@material-ui/core/colors/indigo';
 import { createPost, getPosts } from '../../actions/posts_actions';
 import Avatar from '@material-ui/core/Avatar/Avatar';
-import grey from '@material-ui/core/colors/red';
+import moment from 'moment';
+
 
 
 const styles = theme => ({
@@ -60,6 +61,8 @@ const styles = theme => ({
   },
   avatar: {
     backgroundColor: red[500],
+    width: 40,
+    height: 40,
   },
   media: {
     height: 0,
@@ -77,9 +80,12 @@ const styles = theme => ({
     marginRight: theme.spacing.unit,
     width: 550,
   },
-  // button: {
-  //   margin: theme.spacing.unit,
-  // },
+  expansion: {
+    backgroundColor: "#f50057",
+  },
+  input: {
+    color: "white"
+  }
 });
 
 class CommentsPage extends Component {
@@ -99,7 +105,6 @@ class CommentsPage extends Component {
         <div>
           <Card 
               className={classes.comment}>
-            
               <Grid container
                 justify="flex-start"
                 spacing={0}>
@@ -125,15 +130,39 @@ class CommentsPage extends Component {
   renderComments = (classes) => {
     return _.map(this.props.post, post => {
       if (post.comments) {
+        console.log(post.comments);
         return (post.comments.map(comment => {
           return( <div key={comment._id} className="messagepost">
-            <Card >
-              <CardContent>
-          <Typography
-            variant="button">
-            {comment.comment}
-            </Typography>
-            </CardContent>
+            <Card>
+              <Grid container spacing={0}
+              direction="row"
+              justify="space-between"
+              alignItems="center">
+                <Grid> 
+                  <CardContent>
+                  <Typography
+                    variant="button">
+                      <Avatar className={classes.avatar}> {comment.createdByName.toUpperCase().charAt(0)} </Avatar>
+                  </Typography>
+                </CardContent>
+                </Grid>
+                <Grid> 
+                  <CardContent>
+                  <Typography
+                    variant="button">
+                    {comment.comment}
+                  </Typography>
+                </CardContent>
+                </Grid>
+                <Grid> 
+                  <CardContent>
+                    <Typography
+                      variant="button"> 
+                      {moment(comment.date).format('lll')}
+                    </Typography>
+                  </CardContent>
+                </Grid>
+              </Grid>
             </Card>
           </div>
           )
@@ -175,7 +204,7 @@ class CommentsPage extends Component {
           </Card>
           <Card className={classes.card}>
             <CardContent>
-              <ExpansionPanel>
+              <ExpansionPanel className={classes.expansion}>
                 <ExpansionPanelSummary expandIcon={
                   <Tooltip title="Create a Post">
                     <Button variant="fab" size="small" color="primary" aria-label="Add" className={classes.fab}>
@@ -183,7 +212,7 @@ class CommentsPage extends Component {
                     </Button>
                   </Tooltip>
                 }>
-                  <Typography gutterBottom variant="headline" component="h2">
+                  <Typography className={classes.input} gutterBottom variant="headline" component="h2">
                     Comment
                   </Typography>
                 </ExpansionPanelSummary>
@@ -211,7 +240,7 @@ class CommentsPage extends Component {
                 </ExpansionPanelDetails>
               </ExpansionPanel>
             </CardContent>
-            {this.renderComments()}
+            {this.renderComments(classes)}
           </Card>
         </Grid>
       </div>

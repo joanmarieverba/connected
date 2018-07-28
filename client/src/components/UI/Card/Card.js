@@ -7,7 +7,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import red from '@material-ui/core/colors/red';
+import red from '@material-ui/core/colors/indigo';
 import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -19,6 +19,7 @@ import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import Badge from '@material-ui/core/Badge';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 
 const styles = theme => ({
@@ -44,6 +45,9 @@ const styles = theme => ({
   },
   badge: {
     margin: 0
+  },
+  input: {
+    color: "white"
   }
 });
 
@@ -57,11 +61,13 @@ class RecipeReviewCard extends React.Component {
         <Card className={classes.card}>
           <CardHeader
             avatar={
+              <Tooltip title={this.props.avatar}>
               <Avatar aria-label="Recipe" className={classes.avatar}>
-                {this.props.avatar}
+                <Typography className={classes.input} variant="display1" >{this.props.avatar.charAt(0).toUpperCase()}</Typography>
               </Avatar>
+              </Tooltip>
             }
-            subheader="September 14, 2016"
+            subheader={moment(this.props.createdDate).format('lll')}
           />
           <CardContent>
             <Typography variant="title" gutterBottom>

@@ -2,6 +2,7 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 
 import {success, failure} from './alert_actions';
+import { authSuccess, authFailure} from './auth_actions';
 
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
@@ -33,9 +34,9 @@ export const loginUser = (email, password, history) => {
       });
 
       dispatch(success('Login Success'));
+      dispatch(authSuccess());
       history.push('/');
     }).catch(error => {
-      console.log(error);
       dispatch({
         type: LOGIN_FAILURE,
         error: error,
@@ -43,6 +44,7 @@ export const loginUser = (email, password, history) => {
         success: false
       })
       dispatch(failure('Login Failure'));
+      dispatch(authFailure());
     })
   };
 }

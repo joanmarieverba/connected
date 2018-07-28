@@ -50,14 +50,12 @@ router.get('/', checkAuth, (req, res) => {
         });
         const uniqUsers = [...userSet];
         Post.find({ createdBy: { $in: uniqUsers } }).sort({ date: 'desc' }).populate("comments").sort({ date: 'desc' }).then(result => {
-          console.log(result);
           res.status(200).json({
             posts: result
           });
         });
       } else {
         Post.find({ createdBy: userId }).sort({ date: 'desc' }).populate("comments").sort({ date: 'desc' }).then(result => {
-          console.log(result);
           res.status(200).json({
             posts: result
           });
@@ -65,7 +63,6 @@ router.get('/', checkAuth, (req, res) => {
       }
     })
     .catch(err => {
-      console.log(err);
       res.status(500).json({
         error: err
       });
@@ -79,7 +76,6 @@ router.get('/:postid', checkAuth, (req, res) => {
     .sort({ date: 'desc' })
     .populate({ path: "comments", options: { sort: {'date' : 'desc'} }})
         .sort({ date: 'desc' }).then(result => {
-    console.log(result);
     res.status(200).json({
       posts: result
     });

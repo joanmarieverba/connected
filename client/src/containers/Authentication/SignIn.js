@@ -21,6 +21,7 @@ class SignIn extends Component {
         <Input
           icon={field.icon}
           label={field.label}
+          type={field.type}
         {...field.input}
         />
         <small className="text-danger">{field.meta.touched ? field.meta.error : ''}</small>
@@ -30,7 +31,6 @@ class SignIn extends Component {
 
 
   onSubmit = (values) => {
-    console.log('signin values', values);
     this.props.loginUser(values.email, values.password, this.props.history);
   }
 
@@ -52,6 +52,7 @@ class SignIn extends Component {
                       label="Email"
                       name="email"
                       icon="envelope"
+                      type="email"
                       component={this.renderField}
                     />
                   </div>
@@ -61,6 +62,7 @@ class SignIn extends Component {
                       <Field
                         label="Password"
                         name="password"
+                        type="password"
                         icon="lock"
                         component={this.renderField} />
                   </div>

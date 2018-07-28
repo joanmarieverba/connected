@@ -7,24 +7,22 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
+import Avatar from '@material-ui/core/Avatar';
 import AddIcon from '@material-ui/icons/Add';
 import AddGroup from '@material-ui/icons/GroupAddOutlined'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import TextField from '@material-ui/core/TextField';
-import SendIcon from '@material-ui/icons/SendRounded';
-import IconButton from '@material-ui/core/IconButton';
+import Group from '@material-ui/icons/Group'
+import AddUser from '@material-ui/icons/PersonAddOutlined'
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import red from '@material-ui/core/colors/indigo';
 import { bindActionCreators } from 'redux';
 import { createGroup, getGroups, addUser ,GET_GROUP_SUCCESS } from '../../actions/groups_actions';
-import { findUser } from '../../actions/user_actions';
-import _ from 'lodash';
-import MyCard from '../../components/UI/Card/Card';
-import red from '@material-ui/core/colors/red';
-
-
+import CardMedia from '@material-ui/core/CardMedia';
+import newRed from '@material-ui/core/colors/red';
 
 const styles = theme => ({
   root: {
@@ -37,11 +35,22 @@ const styles = theme => ({
     maxWidth: 800,
     minHeight: 800
   },
+  contactCard: {
+    marginTop: 20,
+    maxWidth: 800,
+  },
   createGroupShowHide: {
     visibility: 'visible'
   },
   avatar: {
     backgroundColor: red[500],
+    width: 60,
+    height: 60,
+  },
+  avatarN: {
+    backgroundColor: newRed[500],
+    width: 60,
+    height: 60,
   },
   media: {
     height: 0,
@@ -60,16 +69,20 @@ const styles = theme => ({
   },
   btn: {
     margin: '20px'
+  },
+  expansion: {
+    backgroundColor: "#f50057",
+  },
+  input: {
+    color: "white"
+  },
+  contactStyle: {
+    marginTop: "20px"
   }
 });
 
 
 class GroupsPage extends Component {
-
-
-  state = {
-    showing: true
-  }
 
   renderField = (field) => {
     return (
@@ -84,13 +97,12 @@ class GroupsPage extends Component {
       </div>
     );
   }
-
- 
-
   addUser = (values) => {
   
     const groupId = this.props.groups.groups[0]._id;
-    this.props.addUser(values, groupId);
+    this.props.addUser(values, groupId, () => {
+      this.props.getGroups();
+    });
   }
 
 
@@ -99,11 +111,33 @@ class GroupsPage extends Component {
     const { handleSubmit } = this.props;
     return users.map(user => {
       return (
-        <div key={user._id}>
-            <Typography gutterBottom variant="headline" component="h2">
-              {user.firstName}
-              </Typography>
+        <div>
+          <Card className={classes.contactCard}>
+            <div className={classes.details}>
+              <Grid container direction="row"
+                alignItems="center" justify="space-between">
+              <Grid> 
+                  <CardContent className={classes.content}>
+                    <Avatar aria-label="Recipe" className={classes.avatarN}>
+                      <Typography className={classes.input} variant="display1" >{user.firstName.charAt(0).toUpperCase()}</Typography>
+                    </Avatar>
+                  </CardContent>
+            </Grid>
+            <Grid>
+              <CardContent className={classes.content}>
+                <Typography variant="headline"> {user.firstName}   {user.lastName} </Typography>
+              </CardContent>
+              </Grid>
+              <Grid> 
+                  <CardContent className={classes.content}>
+                    <Typography variant="headline">  {user.email} </Typography>
+                  </CardContent>
+              </Grid>
+              </Grid>
+            </div>
+          </Card>
         </div>
+
       )
     })
   }
@@ -115,14 +149,19 @@ class GroupsPage extends Component {
 
       if (this.props.groups.groups.length > 0) {
         return (
-          <React.Fragment>
-            <div> {this.props.groups.groups[0].groupName} </div>
+          <div>
+          <Card>
+            <Tooltip title={this.props.groups.groups[0].groupName.toUpperCase()}>
+            <Avatar aria-label="Recipe" className={classes.avatar}>
+              <Group />
+              </Avatar>
+            </Tooltip> 
             <form onSubmit={handleSubmit(this.addUser)}>
               <Grid container
                 justify="center"
                 spacing={0}>
                 <Field
-                  label="Add User"
+                  label="Add User By Email"
                   name="email"
                   type="text"
                   multiline
@@ -134,15 +173,20 @@ class GroupsPage extends Component {
               <Grid container
                 justify="center"
                 spacing={0}>
-                <Tooltip title="Add Contact">
-                  <IconButton type="submit" size="large">
-                    <SendIcon />
-                  </IconButton>
+                <Tooltip title="Add Contact To Group">
+                  <Button className={classes.btn} type="submit" variant="contained" size="medium" color="primary" aria-label="Add">
+                    <AddUser />
+                  </Button>
                 </Tooltip>
               </Grid>
             </form>
-            {this.renderPeople(this.props.groups.groups[0].users)}
-          </React.Fragment>
+          </Card>
+          <div> 
+            <React.Fragment>
+              {this.renderPeople(this.props.groups.groups[0].users)}
+            </React.Fragment>
+          </div>
+        </div>
         );
       }
     }
@@ -156,7 +200,7 @@ class GroupsPage extends Component {
       return (<div> </div>)
     } else {
       return (
-        <ExpansionPanel>
+        <ExpansionPanel className={classes.expansion}>
           <ExpansionPanelSummary expandIcon={
             <Tooltip title="Create a Group">
               <Button variant="fab" size="small" color="primary" aria-label="Add" className={classes.fab}>
@@ -164,7 +208,7 @@ class GroupsPage extends Component {
               </Button>
             </Tooltip>
           }>
-            <Typography gutterBottom variant="headline" component="h2">
+            <Typography className={classes.input} gutterBottom variant="headline" component="h2">
               Create New Group
                   </Typography>
           </ExpansionPanelSummary>
@@ -198,7 +242,7 @@ class GroupsPage extends Component {
                 justify="center"
                 spacing={0}>
                 <Tooltip title="Create Group">
-                  <Button className={classes.btn} type="submit" variant="contained" size="medium" color="secondary" aria-label="Add">
+                  <Button className={classes.btn} type="submit" variant="contained" size="medium" color="primary" aria-label="Add">
                     <AddGroup />
                   </Button>
                 </Tooltip>
@@ -208,9 +252,6 @@ class GroupsPage extends Component {
         </ExpansionPanel>
       )
     }
-    // if (this.props.groups.groups && this.props.groups.groups.length > 0) {
-    //   this.setState({ showing: !showing });
-    // }
   }
 
  
@@ -245,6 +286,7 @@ class GroupsPage extends Component {
             </CardContent>
             {this.renderGroups()}
           </Card>
+          
         </Grid>
       </div>
     );
@@ -252,7 +294,6 @@ class GroupsPage extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state.groups);
   return {
     groups: state.groups
   }

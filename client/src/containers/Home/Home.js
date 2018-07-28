@@ -53,6 +53,17 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     width: 500,
+  },
+  myfont: {
+    fontFamily: "Times New Roman, Times, serif;",
+    fontSize: 30,
+    color: "white"
+  },
+  expansion: {
+    backgroundColor: "#f50057",
+  },
+  input: {
+    color: "white"
   }
 });
 
@@ -74,7 +85,6 @@ class HomePage extends Component {
   }
 
   renderField = (field) => {
-    console.log(field);
     return (
       <div>
         <TextField
@@ -101,9 +111,10 @@ class HomePage extends Component {
       if (post._id) {
         return (
           <MyCard
+            createdDate={post.date}
             key={post._id}
             post={post.post}
-            avatar={post.createdByName.charAt(0).toUpperCase()}
+            avatar={post.createdByName}
             count={post.comments.length}
             commentLink={`/posts/${post._id}`}
             >
@@ -125,7 +136,7 @@ class HomePage extends Component {
           spacing={0}>
           <Card className={classes.card}>
             <CardContent>
-              <ExpansionPanel>
+              <ExpansionPanel className={classes.expansion}>
                 <ExpansionPanelSummary expandIcon={
                   <Tooltip title="Create a Post">
                     <Button variant="fab" size="small" color="primary" aria-label="Add" className={classes.fab}>
@@ -133,7 +144,7 @@ class HomePage extends Component {
                     </Button>
                   </Tooltip>
                 }>
-                  <Typography gutterBottom variant="headline" component="h2">
+                  <Typography className={classes.myfont} gutterBottom variant="headline" component="h2">
                     Create a Post
                   </Typography>
                 </ExpansionPanelSummary>
@@ -149,7 +160,7 @@ class HomePage extends Component {
                         multiline
                         rowsMax="4"
                         margin="normal"
-                        className={`${classes.root} ${classes.textField}`}
+                        className={`${classes.root} ${classes.textField} ${classes.input}`}
                         component={this.renderField} />
                       <Tooltip title="Send Post">
                         <IconButton type="submit" size="large">
@@ -171,7 +182,6 @@ class HomePage extends Component {
 
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     posts: state.posts,
     newpost: state

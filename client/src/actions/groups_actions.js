@@ -1,6 +1,7 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { success, failure } from './alert_actions';
+import { authSuccess, authFailure } from './auth_actions';
 
 export const CREATE_GROUP_REQUEST = 'CREATE_GROUP_REQUEST';
 export const CREATE_GROUP_SUCCESS = 'CREATE_GROUP_SUCCESS';
@@ -27,19 +28,27 @@ export const createGroup = (group, callback) => {
     const jwt = localStorage.getItem('jwtToken');
     const token = `Bearer ${jwt}`;
 
+    if (jwt) {
+      dispatch(authSuccess());
+    } else {
+      dispatch(authFailure());
+    }
+
     axios.post('/group', group,
-      { headers: { Authorization: token } } ).then(result => {
+      { headers: { Authorization: token } }).then(result => {
         dispatch({
           type: CREATE_GROUP_SUCCESS,
           message: 'Group Created',
           group: result.data
         })
+        dispatch(success('Group Successfully Created, You can now add contacts'));
         callback();
       }).catch(error => {
         dispatch({
           type: CREATE_GROUP_FAILURE,
           message: error
         })
+        dispatch(failure('Group could not be created'));
         callback();
       });
   }
@@ -58,8 +67,14 @@ export const getGroups = () => {
     const jwt = localStorage.getItem('jwtToken');
     const token = `Bearer ${jwt}`;
 
+    if (jwt) {
+      dispatch(authSuccess());
+    } else {
+      dispatch(authFailure());
+    }
+
     axios.get('/group', { headers: { Authorization: token } })
-    .then(result => {
+      .then(result => {
         dispatch({
           type: GET_GROUP_SUCCESS,
           message: 'Get Groups',
@@ -74,9 +89,7 @@ export const getGroups = () => {
   }
 }
 
-export const addUser = (email, groupId) => {
-
-
+export const addUser = (email, groupId, callback) => {
 
   return dispatch => {
 
@@ -88,28 +101,42 @@ export const addUser = (email, groupId) => {
     const jwt = localStorage.getItem('jwtToken');
     const token = `Bearer ${jwt}`;
 
+    if (jwt) {
+      dispatch(authSuccess());
+    } else {
+      dispatch(authFailure());
+    }
+
     const reqBody = {
       groupId: groupId,
       ...email
     }
 
-    console.log("reqBody");
-    console.log(reqBody);
-
     axios.put('/group/addUser', reqBody, { headers: { Authorization: token } })
       .then(result => {
-
-        console.log(result);
 
         dispatch({
           type: ADD_USER_TO_GROUP_SUCCESS,
           message: 'Added User To Group',
         })
+        dispatch(success('New User Added to Group'));
+        callback();
       }).catch(error => {
-        dispatch({
-          type: GET_GROUP_FAILURE,
-          message: error
-        })
+
+        if (error.response.status === 409) {
+          dispatch(failure('User Already exists in the group'));
+          dispatch({
+            type: GET_GROUP_FAILURE,
+            message: error
+          })
+        } else {
+          dispatch({
+            type: GET_GROUP_FAILURE,
+            message: error
+          })
+          dispatch(failure('User Cannot be added'));
+        }
+        callback();
       });
   }
 }

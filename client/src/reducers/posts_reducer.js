@@ -59,7 +59,6 @@ export const posts = (state = {}, action) => {
       return updateObject(state, action);
 
     case CREATE_COMMENT_SUCCESS:
-      console.log('in create comment reducer');
       return updateObject(state, action);
 
     case CREATE_COMMENT_FAILURE:

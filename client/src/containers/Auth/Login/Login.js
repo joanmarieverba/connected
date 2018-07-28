@@ -21,7 +21,6 @@ class Login extends Component {
   handleFormSubmit = (event) => {
     event.preventDefault();
     const loginInfo = { login: { ...this.state } }
-    console.log(loginInfo);
   }
 
   render() {

@@ -1,28 +1,54 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import DrawerToggleButton from './SideDrawer/DrawerToggleButton';
 import './ToolBar.css';
-const toolbar = props => {
+import jwt from 'jsonwebtoken';
+class ToolBar extends Component {
 
-  return (
-    <header className="toolbar">
-      <nav className="toolbar__navigation">
-        <div className="toolbar__toggle-button">
-          <DrawerToggleButton click={props.drawerClickHandler} />
-        </div>
-        <div className="toolbar__logo"> <a href="/"> Connected </a></div>
-        <div className="spacer"> </div>
-        <div className="toolbar_navigation-items">
-          <ul>
-            <li> <Link to="/checkin">Checkins</Link></li>
-            <li><Link to="/groups">Groups</Link></li>
+  renderNavItems = () => {
+    if (this.props.isAuth) {
+      return (
+        <React.Fragment>
+        <li><Link to="/checkin">Checkins</Link></li>
+        <li><Link to="/groups">Groups</Link></li>
+        <li> <Link onClick={this.logout} to="/login">Logout</Link></li>
+        <li> <Link to="/about">About</Link></li>)
+      </React.Fragment> 
+      )
+    } else {
+      return (
+          <React.Fragment> 
             <li> <Link to="/login">Login/Register</Link></li>
-          </ul>
-        </div>
-      </nav>
-    </header>
-  )
+          </React.Fragment>
+      )
+    }
+  }
+
+  logout = () => {
+    console.log("in logout");
+    localStorage.removeItem("jwtToken");
+    this.props.history.push('/login')
+  }
+
+  render() {
+    return (
+      <header className="toolbar">
+        <nav className="toolbar__navigation">
+          <div className="toolbar__toggle-button">
+            <DrawerToggleButton click={this.props.drawerClickHandler} />
+          </div>
+          <div className="toolbar__logo"> <Link to="/"> Connected </Link></div>
+          <div className="spacer"> </div>
+          <div className="toolbar_navigation-items">
+            <ul>
+            {this.renderNavItems()}
+            </ul>
+          </div>
+        </nav>
+      </header>
+    )
+  }
 }
 
-export default toolbar;
+export default ToolBar;

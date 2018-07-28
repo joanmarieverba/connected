@@ -20,6 +20,7 @@ class Registration extends Component {
         <Input
           icon={field.icon}
           label={field.label}
+          type={field.type}
           {...field.input}
         />
         <small className="text-danger">{field.meta.touched ? field.meta.error : ''}</small>
@@ -28,7 +29,6 @@ class Registration extends Component {
   }
 
   onSubmit = (values) => {
-    console.log(values);
     this.props.registerUser(values, this.props.history);
   }
 
@@ -73,6 +73,7 @@ class Registration extends Component {
                         label="Email"
                         name="email"
                         icon="envelope"
+                        type="email"
                         component={this.renderField}
                       />
                     </div>
@@ -107,7 +108,7 @@ class Registration extends Component {
                     </div>
                   </div>
                   <div className="row justify-content-md-center"> 
-                      <Button  color="indigo" block type="submit">Register</Button>
+                    <Button color="indigo" block type="submit">Register</Button>
                       <Typography use="button"><Link to={"/login"}>Login</Link> </Typography> 
                   </div>
                   </CardBody>
@@ -141,6 +142,10 @@ const validate = (values) => {
     errors.confirmPassword = 'Enter confirm password'
   }
 
+  if (!(values.confirmPassword === values.password)){
+    errors.confirmPassword = 'Password and Confirm password should be same'
+  }
+ 
   if (!values.phone) {
     errors.phone = 'Enter Phone Number'
   }
@@ -149,7 +154,6 @@ const validate = (values) => {
 }
 
 const  mapStateToProps = (state) => {
-  console.log(state);
   const { registering } = state.registration;
   return {
     registering
