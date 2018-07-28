@@ -130,7 +130,6 @@ class CommentsPage extends Component {
   renderComments = (classes) => {
     return _.map(this.props.post, post => {
       if (post.comments) {
-        console.log(post.comments);
         return (post.comments.map(comment => {
           return( <div key={comment._id} className="messagepost">
             <Card>

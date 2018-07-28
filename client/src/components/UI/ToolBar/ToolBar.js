@@ -26,7 +26,6 @@ class ToolBar extends Component {
   }
 
   logout = () => {
-    console.log("in logout");
     localStorage.removeItem("jwtToken");
     this.props.history.push('/login')
   }

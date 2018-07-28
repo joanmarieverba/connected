@@ -80,7 +80,6 @@ class App extends Component {
 
 
 const mapStateToProps = (state) => {
-  console.log(state.auth.isAuthenticated);
   return {
     notificaton: state.alert,
     isAuthenticated: state.auth.isAuthenticated

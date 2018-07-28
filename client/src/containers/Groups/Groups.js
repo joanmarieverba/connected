@@ -111,7 +111,7 @@ class GroupsPage extends Component {
     const { handleSubmit } = this.props;
     return users.map(user => {
       return (
-        <div>
+        <div key={user._id}>
           <Card className={classes.contactCard}>
             <div className={classes.details}>
               <Grid container direction="row"

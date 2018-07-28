@@ -122,7 +122,6 @@ export const addUser = (email, groupId, callback) => {
         dispatch(success('New User Added to Group'));
         callback();
       }).catch(error => {
-
         if (error.response.status === 409) {
           dispatch(failure('User Already exists in the group'));
           dispatch({
