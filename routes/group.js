@@ -99,7 +99,7 @@ router.put('/addUser', checkAuth, (req, res) => {
       })
     }
     else {
-      res.status(200).json({
+      res.status(404).json({
         message: "User Not found"
       })
     }

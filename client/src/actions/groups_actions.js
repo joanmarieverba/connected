@@ -129,7 +129,13 @@ export const addUser = (email, groupId, callback) => {
             type: GET_GROUP_FAILURE,
             message: error
           })
-        } else {
+        } else if (error.response.status === 404) {
+          dispatch(failure('User Not Found'));
+          dispatch({
+            type: GET_GROUP_FAILURE,
+            message: error
+          })
+        }else {
           dispatch({
             type: GET_GROUP_FAILURE,
             message: error
