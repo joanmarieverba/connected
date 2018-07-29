@@ -57,7 +57,7 @@ class MyGridList extends React.Component {
                 <Grid container spacing={0}>
                   <ListItem divider={true} key={value._id} className={classes.listItem}>
                     <Grid item lg={3} xs={12} sm={6}>
-                      <Avatar alt="Remy Sharp" src={require('../../../images/avatar1.jpg')} />
+                      <Avatar alt="Checkmark" src={require('../../../images/checkmark.png')} />
                     </Grid>
                     <Grid item lg={3} xs={12} sm={6}>
                       <ListItemText primary={`${value.firstName} ${value.lastName}`} />

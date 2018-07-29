@@ -75,28 +75,29 @@ router.put('/addUser', checkAuth, (req, res) => {
     if (user) {
       const userId = user._id;
 
-      Group.find({ users: userId }).then(user => {
+      Group.find({ $and: [{ _id: groupId }, { users: userId }] })
+        .then(user => {
 
-        if (user && user.length > 0) {
-          res.status(409).json({
-            message: 'User already exists in the group'
-          })
-        } else {
-          Group.findOneAndUpdate(
-            { _id: groupId },
-            { $push: { users: userId } },
-            { new: true })
-            .then(group => {
-              res.status(200).json({
-                group: group
-              })
-            }).catch(err => {
-              res.status(500).json({
-                error: err
+          if (user && user.length > 0) {
+            res.status(409).json({
+              message: 'User already exists in the group'
+            })
+          } else {
+            Group.findOneAndUpdate(
+              { _id: groupId },
+              { $push: { users: userId } },
+              { new: true })
+              .then(group => {
+                res.status(200).json({
+                  group: group
+                })
+              }).catch(err => {
+                res.status(500).json({
+                  error: err
+                });
               });
-            });
-        }
-      })
+          }
+        })
     }
     else {
       res.status(404).json({

@@ -10,17 +10,17 @@ class ToolBar extends Component {
     if (this.props.isAuth) {
       return (
         <React.Fragment>
-        <li><Link to="/checkin">Checkins</Link></li>
-        <li><Link to="/groups">Groups</Link></li>
-        <li> <Link onClick={this.logout} to="/login">Logout</Link></li>
-        <li> <Link to="/about">About</Link></li>)
-      </React.Fragment> 
+          <li><Link to="/checkin">Checkins</Link></li>
+          <li><Link to="/groups">Groups</Link></li>
+          <li> <Link onClick={this.logout} to="/login">Logout</Link></li>
+          <li> <Link to="/about">About</Link></li>
+        </React.Fragment>
       )
     } else {
       return (
-          <React.Fragment> 
-            <li> <Link to="/login">Login/Register</Link></li>
-          </React.Fragment>
+        <React.Fragment>
+          <li> <Link to="/login">Login/Register</Link></li>
+        </React.Fragment>
       )
     }
   }
@@ -41,7 +41,7 @@ class ToolBar extends Component {
           <div className="spacer"> </div>
           <div className="toolbar_navigation-items">
             <ul>
-            {this.renderNavItems()}
+              {this.renderNavItems()}
             </ul>
           </div>
         </nav>
