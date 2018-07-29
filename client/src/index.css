@@ -7,5 +7,7 @@ body {
   padding: 0;
   height: 100%;
   font-family: sans-serif;
-  background-color: springgreen;
+  /* background-color: springgreen; */
+  background-image: url(./images/shape-connect3.jpg);
+  background-size: cover;
 }

@@ -68,7 +68,7 @@ class SignIn extends Component {
                   </div>
                 </div>
                   <div className="row justify-content-md-center">
-                    <Button color="indigo" block type="submit">SignIn</Button>
+                    <Button color="indigo" block type="submit">Sign In</Button>
                     <Typography use="button"><Link to={"/register"}>Register</Link> </Typography>
                   </div>
               </CardBody>
