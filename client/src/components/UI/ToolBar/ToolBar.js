@@ -10,7 +10,7 @@ class ToolBar extends Component {
     if (this.props.isAuth) {
       return (
         <React.Fragment>
-          <li><Link to="/checkin">Checkins</Link></li>
+          <li><Link to="/checkin">Check-ins</Link></li>
           <li><Link to="/groups">Groups</Link></li>
           <li> <Link onClick={this.logout} to="/login">Logout</Link></li>
           <li> <Link to="/about">About</Link></li>

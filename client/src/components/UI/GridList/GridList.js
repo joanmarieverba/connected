@@ -49,7 +49,7 @@ class MyGridList extends React.Component {
                     <ListItemText primary="Email" />
                   </Grid>
                   <Grid item lg={3} xs={12} sm={6}>
-                    <ListItemText primary="Last Checkin" />
+                    <ListItemText primary="Last Check-in" />
                   </Grid>
                 </ListItem>
               </Grid> 
