@@ -112,7 +112,7 @@ class Registration extends Component {
                       <Typography use="button"><Link to={"/login"}>Login</Link> </Typography> 
                   </div>
                   </CardBody>
-                <Typography use="overline"> By clicking "Register" I agree to the <Link to={"/login"}>Terms and Conditions</Link> </Typography>
+                <Typography use="overline"> By clicking "Register" I agree to the <Link to={"/terms"}>Terms and Conditions</Link> </Typography>
               </Card>
             </form>
           </div>

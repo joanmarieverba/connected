@@ -76,7 +76,7 @@ class TermsComp extends Component {
         <br />
         <br />
         <Button>
-        <Link to={"/login"}>Back to Registration</Link>
+        <Link to={"/register"}>Back to Registration</Link>
         </Button>
         </Typography>
         </Card>
