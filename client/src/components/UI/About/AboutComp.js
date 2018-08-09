@@ -4,7 +4,7 @@ import connected from './connected.jpg';
 import { Typography } from 'rmwc/Typography';
 import { Elevation } from 'rmwc/Elevation';
 import { Card } from 'rmwc/Card';
-
+import group from "./group.jpg";
 import {
     List,
     ListItem,
@@ -13,7 +13,7 @@ import {
     ListItemGraphic,
     ListItemMeta
    } from 'rmwc/List';
-import group from "./group.jpg";
+
 
 class AboutComp extends React.Component {
     render() {
