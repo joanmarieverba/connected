@@ -4,7 +4,7 @@
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
-    "mongoose": "^5.2.3",
+    "mongoose": "^5.7.5",
     "@material/top-app-bar": "^0.37.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
